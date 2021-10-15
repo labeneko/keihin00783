@@ -45,6 +45,8 @@ jobs:
           previousimagepath="${previousimagepath//keihin00778\//}"
           echo $savepath
           echo $previousimagepath
+          previousmd5=`md5sum ${previousimagepath}`
+          echo $previousmd5
           previousmd5=`md5sum ${previousimagepath} | awk '{ print $1 }'`
           if [[ "$currentmd5" != "$previousmd5" ]]； then
             echo "keihin00778/$savepath" >> "images/24h.txt"
