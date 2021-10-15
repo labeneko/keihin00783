@@ -27,7 +27,7 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
       - name: install
         run: yarn install
-      - name: Commit files
+      - name: generate file
         run: |
           now=`TZ=Asia/Tokyo date '+%Y%m%d%H%M'`
           year=`TZ=Asia/Tokyo date '+%Y'`
@@ -43,20 +43,18 @@ jobs:
           currentmd5=`md5sum $savepath | awk '{ print $1 }'`
           previousimagepath=`tail -n 1 images/24h.txt`
           previousimagepath="${previousimagepath//keihin00778\//}"
-          echo $savepath
-          echo $previousimagepath
-          previousmd5=`md5sum ${previousimagepath}`
-          echo $previousmd5
           previousmd5=`md5sum ${previousimagepath} | awk '{ print $1 }'`
-          if [[ "$currentmd5" != "$previousmd5" ]]； then
-            echo "keihin00778/$savepath" >> "images/24h.txt"
-            echo "keihin00778/$savepath" >> "images/${year}/${month}/${date}/images.txt"
-            git config --local user.email "info@laboneko.jp"
-            git config --local user.name "labeneko"
-            git add .
-            git commit -m "画像を保存 ${now}" -a || true
-          fi
+      - name: commit
+        if: ${{ currentmd5 != $previousmd5 }}
+        run: |
+          echo "keihin00778/$savepath" >> "images/24h.txt"
+          echo "keihin00778/$savepath" >> "images/${year}/${month}/${date}/images.txt"
+          git config --local user.email "info@laboneko.jp"
+          git config --local user.name "labeneko"
+          git add .
+          git commit -m "画像を保存 ${now}" -a || true
       - name: Push changes
+        if: ${{ currentmd5 != $previousmd5 }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
