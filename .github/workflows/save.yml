@@ -44,17 +44,14 @@ jobs:
           previousimagepath=`tail -n 1 images/24h.txt`
           previousimagepath="${previousimagepath//keihin00778\//}"
           previousmd5=`md5sum ${previousimagepath} | awk '{ print $1 }'`
-      - name: commit
-        if: ${{ currentmd5 != $previousmd5 }}
-        run: |
-          echo "keihin00778/$savepath" >> "images/24h.txt"
-          echo "keihin00778/$savepath" >> "images/${year}/${month}/${date}/images.txt"
+          if [[ currentmd5 != $previousmd5 ]]; then echo "keihin00778/$savepath" >> "images/24h.txt"; fi
+          if [[ currentmd5 != $previousmd5 ]]; then echo "keihin00778/$savepath" >> "images/${year}/${month}/${date}/images.txt"; fi
+          if [[ currentmd5 == $previousmd5 ]]; then rm $savepath ; fi
           git config --local user.email "info@laboneko.jp"
           git config --local user.name "labeneko"
           git add .
           git commit -m "画像を保存 ${now}" -a || true
       - name: Push changes
-        if: ${{ currentmd5 != $previousmd5 }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
