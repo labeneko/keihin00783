@@ -43,7 +43,7 @@ jobs:
           currentmd5=`md5sum $savepath | awk '{ print $1 }'`
           previousimagepath=`tail -n 1 images/24h.txt`
           previousmd5=`md5sum $previousimagepath | awk '{ print $1 }'`
-          if [[ currentmd5 != previousmd5 ]] ； then
+          if [[ "$currentmd5" != "$previousmd5" ]]； then
             echo "keihin00778/$savepath" >> "images/24h.txt"
             echo "keihin00778/$savepath" >> "images/${year}/${month}/${date}/images.txt"
             git config --local user.email "info@laboneko.jp"
