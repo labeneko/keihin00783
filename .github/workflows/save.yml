@@ -27,7 +27,7 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
       - name: install
         run: yarn install
-      - name: generate file
+      - name: commit
         run: |
           now=`TZ=Asia/Tokyo date '+%Y%m%d%H%M'`
           year=`TZ=Asia/Tokyo date '+%Y'`
