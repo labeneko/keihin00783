@@ -34,7 +34,7 @@ jobs:
           month=`TZ=Asia/Tokyo date '+%m'`
           date=`TZ=Asia/Tokyo date '+%d'`
           savepath="images/$year/$month/$date/$now.jpg"
-          url="https://www.ktr.mlit.go.jp/keihin/webcam/cam_tama-river_green-office.jpg?${now}"
+          url="https://www.ktr.mlit.go.jp/keihin/webcam/cam_tode_drain-pipe.jpg?${now}"
           mkdir -p "images"
           mkdir -p "images/${year}"
           mkdir -p "images/${year}/${month}"
@@ -42,12 +42,12 @@ jobs:
           curl -o $savepath $url
           currentmd5=`md5sum $savepath | awk '{ print $1 }'`
           previousimagepath=`tail -n 1 images/24h.txt`
-          previousimagepath="${previousimagepath//keihin00778\//}"
+          previousimagepath="${previousimagepath//keihin00783\//}"
           previousmd5=`md5sum ${previousimagepath} | awk '{ print $1 }'`
           echo $currentmd5
           echo $previousmd5
-          if [[ $currentmd5 != $previousmd5 ]]; then echo "keihin00778/$savepath" >> "images/24h.txt"; fi
-          if [[ $currentmd5 != $previousmd5 ]]; then echo "keihin00778/$savepath" >> "images/${year}/${month}/${date}/images.txt"; fi
+          if [[ $currentmd5 != $previousmd5 ]]; then echo "keihin00783/$savepath" >> "images/24h.txt"; fi
+          if [[ $currentmd5 != $previousmd5 ]]; then echo "keihin00783/$savepath" >> "images/${year}/${month}/${date}/images.txt"; fi
           if [[ $currentmd5 == $previousmd5 ]]; then rm $savepath ; fi
           git config --local user.email "info@laboneko.jp"
           git config --local user.name "labeneko"
